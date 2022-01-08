@@ -1,0 +1,115 @@
+<html>
+
+<head>
+  <style>
+    .container {
+      margin-top: 20vh;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .action {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .messages {
+      width: 300px;
+      border: 1px solid #cccccc;
+      height: 40vh;
+      overflow-y: auto;
+      scrollbar-width: 5px;
+    }
+
+    .message {
+      color: #cccccc;
+      padding: 5px;
+      color: black;
+    }
+  </style>
+  <script type="module">
+    const messagesEl = document.querySelector('.messages');
+    const getWebSocket = webSocketFactory();
+
+    function webSocketFactory() {
+      let ws = undefined;
+      return () => !!ws ? Promise.resolve(ws) : new Promise((res, rej) => {
+        ws = new WebSocket('ws://localhost:3000');
+        ws.onopen = () => res(ws);
+        ws.onerror = rej;
+      });
+    }
+
+    document
+      .querySelector('button.connect')
+      .addEventListener('click', async () => {
+        const channel = document.querySelector('input.channel').value;
+        fetch('/subscribe', {
+          method: 'POST',
+          body: JSON.stringify({ channel }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+      });
+
+    document
+      .querySelector('button.send')
+      .addEventListener('click', async () => {
+        const message = document.querySelector('input.send-message').value;
+        fetch('/send', {
+          method: 'POST',
+          body: JSON.stringify({ message }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+      });
+
+    getWebSocket()
+      .then(ws => ws.onmessage = ({ data }) => {
+        const messageEl = document
+          .querySelector('#message')
+          .content
+          .firstElementChild
+          .cloneNode(true);
+        messageEl.textContent = data;
+        messagesEl.append(messageEl);
+      });
+  </script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="actions">
+      <div class="action">
+        <div>
+          <input type="text" placeholder="Channel Name" class="channel"></input>
+        </div>
+        <button class="connect">Connect</button>
+      </div>
+      <div class="action">
+        <div>
+          <input type="text" placeholder="Your Message" class="send-message"></input>
+        </div>
+        <button class="send">Send</button>
+      </div>
+    </div>
+    <div class="messages"> </div>
+  </div>
+
+  <template id="message">
+    <div class="message"></div>
+  </template>
+
+</body>
+
+</html>
