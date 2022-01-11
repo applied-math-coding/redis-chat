@@ -1,17 +1,17 @@
-# Installation:
-git clone https://github.com/applied-math-coding/redis-chat.git
-cd redis-chat
-npm i
+# Installation:<br>
+git clone https://github.com/applied-math-coding/redis-chat.git <br>
+cd redis-chat <br>
+npm i 
 
 
 # Setup:
-The application requires a redis instance to run with all its defaults:
-docker pull redis
+The application requires a redis instance to run with all its defaults:<br><br>
+docker pull redis<br>
 docker run --name some-redis -p 6379:6379 -d redis
 
 
 # Starting:
-The application can be started by running
+The application can be started by running<br><br>
 npm start
 
 # Using
