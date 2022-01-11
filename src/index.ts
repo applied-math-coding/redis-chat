@@ -2,8 +2,8 @@ import express from 'express';
 import setupExpressWs from 'express-ws';
 import session, { SessionData } from 'express-session';
 import redisStoreFactory from 'connect-redis';
-import { SocketStore } from './src/socket-store';
-import { createClient } from './src/redis-client';
+import { SocketStore } from './socket-store';
+import { createClient } from './redis-client';
 
 declare module 'express-session' {
   interface SessionData {

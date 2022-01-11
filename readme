@@ -16,6 +16,6 @@ The application can be started by
 npm start
 
 #Using
-Access http://localhost:3000/index.html with two different
+Do access http://localhost:3000/index.html with two different
 browsers and supply the same channel to connect.
-Then send message from both sides.
+Then send messages from both sides.
